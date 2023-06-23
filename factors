@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+
+function factoring() {
+  const factor_file = process.argv[2];
+  const data = fs.readFileSync(factor_file, 'utf8').split('\n');
+
+  for (let i = 0; i < data.length; i++) {
+    const number = parseInt(data[i]);
+    if (number % 2 === 0) {
+      console.log(`${number}=${number / 2}*2`);
+      continue;
+    }
+    
+    let j = 3;
+    while (j < number / 2) {
+      if (number % j === 0) {
+        console.log(`${number}=${number / j}*${j}`);
+        break;
+      }
+      j += 2;
+    }
+
+    if (j === Math.floor(number / 2) + 1) {
+      console.log(`${number}=${number}*1`);
+    }
+  }
+}
+
+factoring();
