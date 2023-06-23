@@ -1,31 +1,20 @@
-#!/usr/bin/env node
+#!/usr/bin/python3
+import sys
 
-const fs = require('fs');
+def factorize():
+    factor_file = sys.argv[1]
+    with open(factor_file) as fd:
+        for line in fd:
+            number = int(line)
+            factors = []
+            for i in range(2, number // 2 + 1):
+                if number % i == 0:
+                    factors.append(i)
+                    number //= i
+                    break
+            if not factors:
+                factors.append(1)
+            factors.append(number)
+            print("{}={}".format(line.rstrip(), "*".join(map(str, factors))))
 
-function factoring() {
-  const factor_file = process.argv[2];
-  const data = fs.readFileSync(factor_file, 'utf8').split('\n');
-
-  for (let i = 0; i < data.length; i++) {
-    const number = parseInt(data[i]);
-    if (number % 2 === 0) {
-      console.log(`${number}=${number / 2}*2`);
-      continue;
-    }
-    
-    let j = 3;
-    while (j < number / 2) {
-      if (number % j === 0) {
-        console.log(`${number}=${number / j}*${j}`);
-        break;
-      }
-      j += 2;
-    }
-
-    if (j === Math.floor(number / 2) + 1) {
-      console.log(`${number}=${number}*1`);
-    }
-  }
-}
-
-factoring();
+factorize()
