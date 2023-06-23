@@ -1,20 +1,26 @@
 #!/usr/bin/python3
 import sys
 
-def factorize():
-    factor_file = sys.argv[1]
-    with open(factor_file) as fd:
-        for line in fd:
-            number = int(line)
-            factors = []
-            for i in range(2, number // 2 + 1):
-                if number % i == 0:
-                    factors.append(i)
-                    number //= i
-                    break
-            if not factors:
-                factors.append(1)
-            factors.append(number)
-            print("{}={}".format(line.rstrip(), "*".join(map(str, factors))))
+def factorize(number):
+    factors = []
+    for i in range(2, int(number**0.5) + 1):
+        while number % i == 0:
+            factors.append(i)
+            number //= i
+    if number > 1:
+        factors.append(number)
+    return factors
 
-factorize()
+def factorize_file(file_path):
+    with open(file_path, 'r') as file:
+        for line in file:
+            number = int(line.strip())
+            factors = factorize(number)
+            print(f'{number}={"*".join(map(str, factors))}')
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: factors <file>")
+        sys.exit(1)
+    file_path = sys.argv[1]
+    factorize_file(file_path)
